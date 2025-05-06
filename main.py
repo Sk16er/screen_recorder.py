@@ -1,21 +1,31 @@
 # importing the required packages
+# pip install pyautogui opencv-python numpy
 import pyautogui
 import cv2
 import numpy as np
+import os
 
-# Specify resolution
-resolution = (1920, 1080)
+# Dynamically get the screen resolution
+resolution = pyautogui.size()
 
-# Specify video codec
-codec = cv2.VideoWriter_fourcc(*"XVID")
+# Update the codec for MP4 format
+codec = cv2.VideoWriter_fourcc(*"mp4v")
 
-# Specify name of Output file
-filename = "Recording.avi"
+# Function to generate a unique filename
+def get_unique_filename(base_name, extension):
+    counter = 1
+    filename = f"{base_name}.{extension}"
+    while os.path.exists(filename):
+        filename = f"{base_name}({counter}).{extension}"
+        counter += 1
+    return filename
+
+# Update the filename to use a unique name
+filename = get_unique_filename("Recording", "mp4")
 
 # Specify frames rate. We can choose any 
 # value and experiment with it
 fps = 60.0
-
 
 # Creating a VideoWriter object
 out = cv2.VideoWriter(filename, codec, fps, resolution)
